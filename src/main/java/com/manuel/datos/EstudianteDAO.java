@@ -126,6 +126,27 @@ public class EstudianteDAO {
         return false;
 
     }
+    //eliminar estudiante
+    public boolean eliminarEstudiente(Estudiante estudiante){
+        PreparedStatement ps;
+        Connection con = getConexion();
+        String sql = "delete from estudiante where id_estudiante = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,estudiante.getIdEstudiante());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("error al eliminar estudiante: "+e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("error al cerrar la conexion: "+e.getMessage());
+            }
+        }
+        return false;
+    }
 
 
 
@@ -133,6 +154,21 @@ public class EstudianteDAO {
     public static void main(String[] args) {
         var estudianteDao = new EstudianteDAO();
 
+        var EliminarEstudiante = new Estudiante(11);
+        var eliminado = estudianteDao.eliminarEstudiente(EliminarEstudiante);
+        if (eliminado){
+            System.out.println("estudiante eliminado: "+EliminarEstudiante);
+        }else {
+            System.out.println("estudiante no se elimino"+ EliminarEstudiante);
+        }
+        // modificar estudiande existente
+       /* var estudianteModificar = new Estudiante(1,"juan carlos","juarez","34345","juan@mail.com");
+        var modificado = estudianteDao.modificarEstudiante(estudianteModificar);
+        if (modificado){
+            System.out.println("estudiante modificado: "+estudianteModificar);
+        }else {
+            System.out.println("estudiane no se modifico" + estudianteModificar);
+        }*/
         //agregar estudiante
         /*var nuevoEstudiante = new Estudiante("carlos","lara","495995","carlos@gmail.com");
         var agregado = estudianteDao.agregarEstudiante(nuevoEstudiante);
