@@ -76,7 +76,6 @@ public class EstudianteDAO {
     //creacion del metodo de agregar un estudiante a la base de datos
     public boolean agregarEstudiante(Estudiante estudiante){
         PreparedStatement ps;
-        ResultSet rs;
         Connection con = getConexion();
         String sql = "insert into estudiante(nombre,apellido,telefono,email) values (?,?,?,?)";
         try {
