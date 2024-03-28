@@ -5,6 +5,7 @@ import com.manuel.dominio.Estudiante;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import static com.manuel.conexion.Conexion.getConexion;
@@ -99,19 +100,47 @@ public class EstudianteDAO {
         return false;
 
     }
+    //modificar estudiante
+    public boolean modificarEstudiante(Estudiante estudiante){
+        PreparedStatement ps;
+        Connection con = getConexion();
+        String sql = "update estudiante set nombre=?,apellido=?,telefono=?,email=? where id_estudiante = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1,estudiante.getNombre());
+            ps.setString(2,estudiante.getApellido());
+            ps.setString(3,estudiante.getTelefono());
+            ps.setString(4,estudiante.getEmail());
+            ps.setInt(5,estudiante.getIdEstudiante());
+            ps.execute();
+            return  true;
+        }catch (Exception e){
+            System.out.println("error al modificar el estudiante: "+e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("error al cerrar la conexion "+ e.getMessage());
+            }
+        }
+        return false;
+
+    }
+
+
 
 
     public static void main(String[] args) {
         var estudianteDao = new EstudianteDAO();
 
         //agregar estudiante
-        var nuevoEstudiante = new Estudiante("carlos","lara","495995","carlos@gmail.com");
+        /*var nuevoEstudiante = new Estudiante("carlos","lara","495995","carlos@gmail.com");
         var agregado = estudianteDao.agregarEstudiante(nuevoEstudiante);
         if (agregado){
             System.out.println("estudiante agregado: "+ nuevoEstudiante);
         }else {
             System.out.println("no se agrego el estudiante: "+ nuevoEstudiante);
-        }
+        }*/
 
         // listar los estudiantes
         System.out.println("listados de estudiantes: ");
